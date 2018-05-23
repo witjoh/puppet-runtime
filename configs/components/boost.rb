@@ -19,7 +19,7 @@ component "boost" do |pkg, settings, platform|
   end
 
   if platform.architecture == "aarch64"
-    pkg.apply_patch 'resources/patches/boost/boost-aarch64-flags.patch'
+    #pkg.apply_patch 'resources/patches/boost/boost-aarch64-flags.patch'
   end
 
   # Package Dependency Metadata

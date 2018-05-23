@@ -40,7 +40,7 @@ component "yaml-cpp" do |pkg, settings, platform|
   if platform.is_cross_compiled_linux?
     # We're using the x86_64 version of cmake
     cmake = "/opt/pl-build-tools/bin/cmake"
-    cmake_toolchain_file = "-DCMAKE_TOOLCHAIN_FILE=#{settings[:tools_root]}/aarch64-redhat-linux/pl-build-toolchain.cmake"
+    cmake_toolchain_file = "-DCMAKE_TOOLCHAIN_FILE=#{settings[:tools_root]}/#{settings[:platform_triple]}/pl-build-toolchain.cmake"
   elsif platform.is_solaris?
     # We always use the i386 build of cmake, even on sparc
     cmake = "/opt/pl-build-tools/i386-pc-solaris2.#{platform.os_version}/bin/cmake"
