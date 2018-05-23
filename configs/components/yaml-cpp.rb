@@ -9,8 +9,6 @@ component "yaml-cpp" do |pkg, settings, platform|
     pkg.build_requires "pl-cmake"
   elsif platform.is_solaris?
     if platform.os_version == "10"
-      pkg.build_requires "http://pl-build-tools.delivery.puppetlabs.net/solaris/10/pl-gcc-4.8.2-8.#{platform.architecture}.pkg.gz"
-      pkg.build_requires "http://pl-build-tools.delivery.puppetlabs.net/solaris/10/pl-binutils-2.27-1.#{platform.architecture}.pkg.gz"
       pkg.build_requires "http://pl-build-tools.delivery.puppetlabs.net/solaris/10/pl-cmake-3.2.3-15.i386.pkg.gz"
     elsif platform.os_version == "11"
       pkg.build_requires "pl-binutils-#{platform.architecture}"
@@ -44,6 +42,7 @@ component "yaml-cpp" do |pkg, settings, platform|
   elsif platform.is_solaris?
     # We always use the i386 build of cmake, even on sparc
     cmake = "/opt/pl-build-tools/i386-pc-solaris2.#{platform.os_version}/bin/cmake"
+    cmake_toolchain_file = "-DCMAKE_TOOLCHAIN_FILE=#{settings[:tools_root]}/#{settings[:platform_triple]}/pl-build-toolchain.cmake"
     pkg.environment "PATH" => "$$PATH:/opt/csw/bin"
   elsif platform.is_macos?
     cmake_toolchain_file = ""

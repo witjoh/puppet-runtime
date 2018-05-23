@@ -8,6 +8,7 @@ component "boost" do |pkg, settings, platform|
 
   if platform.is_solaris?
     pkg.apply_patch 'resources/patches/boost/0001-fix-build-for-solaris.patch'
+    pkg.apply_patch 'resources/patches/boost/Fix-bootstrap-build-for-solaris-10.patch'
   end
 
   if platform.is_solaris? || platform.is_aix?
@@ -34,13 +35,7 @@ component "boost" do |pkg, settings, platform|
     pkg.build_requires "pl-binutils-#{platform.architecture}"
     pkg.build_requires "pl-gcc-#{platform.architecture}"
   elsif platform.is_solaris?
-    if platform.os_version == "10"
-      pkg.build_requires "http://builds.puppetlabs.lan/pl-build-tools/c61ad9a46feb52c8eea3ac477ebe635fd676f80a/artifacts/solaris/10/pl-gcc-6.1.0-7.i386.pkg.gz"
-      pkg.build_requires "http://pl-build-tools.delivery.puppetlabs.net/solaris/10/pl-binutils-2.27-1.#{platform.architecture}.pkg.gz"
-    elsif platform.os_version == "11"
-      pkg.build_requires "pl-binutils-#{platform.architecture}"
-      pkg.build_requires "pl-gcc-#{platform.architecture}"
-    end
+    #
   elsif platform.is_windows?
     #
   elsif platform.is_macos?
@@ -88,7 +83,7 @@ component "boost" do |pkg, settings, platform|
     toolset = 'gcc'
     with_toolset = "--with-toolset=clang"
   elsif platform.is_solaris?
-    pkg.environment 'PATH', '/opt/pl-build-tools/bin:$(PATH):/usr/local/bin:/usr/ccs/bin:/usr/sfw/bin'
+    pkg.environment 'PATH', '/opt/pl-build-tools/bin:/usr/sbin:/usr/bin:/usr/local/bin:/usr/ccs/bin:/usr/sfw/bin:/usr/csw/bin'
     linkflags = "-Wl,-rpath=#{settings[:libdir]},-L/opt/pl-build-tools/#{settings[:platform_triple]}/lib,-L/usr/lib"
     b2flags = "define=_XOPEN_SOURCE=600"
     if platform.architecture == "sparc"
