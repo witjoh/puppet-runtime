@@ -40,9 +40,11 @@ component "yaml-cpp" do |pkg, settings, platform|
     cmake = "/opt/pl-build-tools/bin/cmake"
     cmake_toolchain_file = "-DCMAKE_TOOLCHAIN_FILE=#{settings[:tools_root]}/#{settings[:platform_triple]}/pl-build-toolchain.cmake"
   elsif platform.is_solaris?
+    if platform.os_version == "11"
+      make = '/usr/bin/gmake'
+    end
     # We always use the i386 build of cmake, even on sparc
     cmake = "/opt/pl-build-tools/i386-pc-solaris2.#{platform.os_version}/bin/cmake"
-    make = '/usr/bin/gmake'
     cmake_toolchain_file = "-DCMAKE_TOOLCHAIN_FILE=#{settings[:tools_root]}/#{settings[:platform_triple]}/pl-build-toolchain.cmake"
     pkg.environment "PATH" => "$$PATH:/opt/csw/bin"
   elsif platform.is_macos?
