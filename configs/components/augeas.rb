@@ -41,8 +41,11 @@ component 'augeas' do |pkg, settings, platform|
   pkg.environment "PKG_CONFIG_PATH", "#{settings[:libdir]}/pkgconfig"
 
   if platform.is_aix?
+    # Moved to platform definition
+    #
+    # Newer pkg-config from the linux toolbox didn't seem to work here
     pkg.build_requires "http://osmirror.delivery.puppetlabs.net/AIX_MIRROR/pkg-config-0.19-6.aix5.2.ppc.rpm"
-    pkg.environment "CC", "/opt/pl-build-tools/bin/gcc"
+    #pkg.environment "CC", "/opt/pl-build-tools/bin/gcc"
     pkg.environment "LDFLAGS", settings[:ldflags]
     pkg.environment "CFLAGS", "-I#{settings[:includedir]}"
     pkg.build_requires 'libedit'

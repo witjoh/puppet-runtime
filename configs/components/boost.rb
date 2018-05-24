@@ -27,10 +27,12 @@ component "boost" do |pkg, settings, platform|
 
   # Build Requirements
   if platform.is_aix?
-    pkg.build_requires "http://pl-build-tools.delivery.puppetlabs.net/aix/#{platform.os_version}/ppc/pl-gcc-5.2.0-1.aix#{platform.os_version}.ppc.rpm"
-    pkg.build_requires 'http://osmirror.delivery.puppetlabs.net/AIX_MIRROR/bzip2-1.0.5-3.aix5.3.ppc.rpm'
-    pkg.build_requires 'http://osmirror.delivery.puppetlabs.net/AIX_MIRROR/zlib-devel-1.2.3-4.aix5.2.ppc.rpm'
-    pkg.build_requires 'http://osmirror.delivery.puppetlabs.net/AIX_MIRROR/zlib-1.2.3-4.aix5.2.ppc.rpm'
+    # Replaced in platform definition
+    #
+    #pkg.build_requires "http://pl-build-tools.delivery.puppetlabs.net/aix/#{platform.os_version}/ppc/pl-gcc-5.2.0-1.aix#{platform.os_version}.ppc.rpm"
+    #pkg.build_requires 'http://osmirror.delivery.puppetlabs.net/AIX_MIRROR/bzip2-1.0.5-3.aix5.3.ppc.rpm'
+    #pkg.build_requires 'http://osmirror.delivery.puppetlabs.net/AIX_MIRROR/zlib-devel-1.2.3-4.aix5.2.ppc.rpm'
+    #pkg.build_requires 'http://osmirror.delivery.puppetlabs.net/AIX_MIRROR/zlib-1.2.3-4.aix5.2.ppc.rpm'
   elsif platform.is_cross_compiled_linux?
     pkg.build_requires "pl-binutils-#{platform.architecture}"
     pkg.build_requires "pl-gcc-#{platform.architecture}"
@@ -69,7 +71,11 @@ component "boost" do |pkg, settings, platform|
   bootstrap_suffix = ".sh"
   execute = "./"
   addtl_flags = ""
-  gpp = "#{settings[:tools_root]}/bin/g++"
+  if platform.is_aix?
+    gpp = "/usr/bin/g++"
+  else
+    gpp = "#{settings[:tools_root]}/bin/g++"
+  end
   b2flags = ""
 
   if platform.is_cross_compiled_linux?
@@ -109,21 +115,21 @@ component "boost" do |pkg, settings, platform|
 
     # We don't have iconv available on windows yet
     addtl_flags = "boost.locale.iconv=off"
+  elsif platform.is_aix?
+    pkg.environment "PATH" => "/opt/freeware/bin:/opt/pl-build-tools/bin:$$PATH"
+    linkflags = "-Wl,-L#{settings[:libdir]},-L/opt/pl-build-tools/lib"
   else
     pkg.environment "PATH" => "#{settings[:bindir]}:$$PATH"
     linkflags = "-Wl,-rpath=#{settings[:libdir]},-rpath=#{settings[:libdir]}64"
-
-    if platform.is_aix?
-      pkg.environment "PATH" => "/opt/freeware/bin:/opt/pl-build-tools/bin:$$PATH"
-      linkflags = "-Wl,-rpath=#{settings[:libdir]},-L#{settings[:libdir]},-L/opt/pl-build-tools/lib"
-    end
   end
 
   # Set user-config.jam
   if platform.is_windows?
     userconfigjam = %Q{using gcc : : #{gpp} ;}
   else
-    if platform.architecture =~ /arm|s390x/ || platform.is_aix?
+    if platform.is_aix?
+      userconfigjam = %Q{using gcc : 6.3.0 : #{gpp} : <linkflags>"#{linkflags}" <cflags>"#{cflags}" <cxxflags>"#{cxxflags}" ;}
+    elsif platform.architecture =~ /arm|s390x/
       userconfigjam = %Q{using gcc : 5.2.0 : #{gpp} : <linkflags>"#{linkflags}" <cflags>"#{cflags}" <cxxflags>"#{cxxflags}" ;}
     else
       userconfigjam = %Q{using gcc : 4.8.2 : #{gpp} : <linkflags>"#{linkflags}" <cflags>"#{cflags}" <cxxflags>"#{cxxflags}" ;}
