@@ -20,10 +20,11 @@ end
 proj.component 'curl'
 proj.component 'puppet-ca-bundle'
 proj.component "ruby-#{proj.ruby_version}"
-proj.component 'augeas' unless platform.is_windows?
+#proj.component 'augeas' unless platform.is_windows?
 proj.component 'libxml2' unless platform.is_windows?
 proj.component 'libxslt' unless platform.is_windows?
-proj.component 'ruby-augeas' unless platform.is_windows?
+
+#proj.component 'ruby-augeas' unless platform.is_windows?
 proj.component 'ruby-shadow' unless platform.is_aix? || platform.is_windows?
 # We only build ruby-selinux for EL 5-7
 if platform.name =~ /^el-(5|6|7)-.*/ || platform.is_fedora?
@@ -56,4 +57,3 @@ end
 if platform.is_windows? || platform.is_solaris?
   proj.component 'rubygem-minitar'
 end
-

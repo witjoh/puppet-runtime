@@ -15,8 +15,7 @@ component "runtime-agent" do |pkg, settings, platform|
     pkg.build_requires "pl-binutils-#{platform.architecture}"
     pkg.build_requires "pl-gcc-#{platform.architecture}"
   elsif platform.is_aix?
-    #pkg.build_requires "http://pl-build-tools.delivery.puppetlabs.net/aix/#{platform.os_version}/ppc/pl-gcc-5.2.0-11.aix#{platform.os_version}.ppc.rpm"
-    #libdir = "/opt/pl-build-tools/lib/gcc/powerpc-ibm-aix#{platform.os_version}.0.0/5.2.0/"
+    #
   elsif platform.is_windows?
     # We only need zlib because curl is dynamically linking against zlib
     pkg.build_requires "pl-zlib-#{platform.architecture}"
@@ -37,8 +36,11 @@ component "runtime-agent" do |pkg, settings, platform|
   pkg.environment "PATH", "$(PATH):/opt/csw/gnu" if platform.is_solaris?
 
   if platform.is_aix?
-    #pkg.install_file File.join(libdir, "libstdc++.a"), "/opt/puppetlabs/puppet/lib/libstdc++.a"
-    #pkg.install_file File.join(libdir, "libgcc_s.a"), "/opt/puppetlabs/puppet/lib/libgcc_s.a"
+    # We're using native gcc on AIX, but IBM's linux toolbox doesn't seem to
+    # include cmake. We can keep pl-cmake, but we need to copy in these
+    # libraries files for cmake to function correctly, since we don't have pl-gcc:
+    pkg.install_file("/opt/freeware/lib/libstdc++.a", "/usr/lib/libstdc++.a")
+    pkg.install_file("/opt/freeware/lib/libgcc_s.a", "/usr/lib/libgcc_s.a")
   elsif platform.is_macos?
     # Nothing to see here
   elsif platform.is_windows?

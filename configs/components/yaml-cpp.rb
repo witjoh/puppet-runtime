@@ -24,6 +24,9 @@ component "yaml-cpp" do |pkg, settings, platform|
     # Moved to platform def
     #pkg.build_requires "http://pl-build-tools.delivery.puppetlabs.net/aix/#{platform.os_version}/ppc/pl-gcc-5.2.0-1.aix#{platform.os_version}.ppc.rpm"
     pkg.build_requires "http://pl-build-tools.delivery.puppetlabs.net/aix/#{platform.os_version}/ppc/pl-cmake-3.2.3-2.aix#{platform.os_version}.ppc.rpm"
+
+    # Since we're using system GCC but pl-cmake, we need to let cmake know where to find libstdc++ and libgcc_a:
+    # pkg.environment "PL_TOOLS_ROOT", "/opt/freeware/lib"
   else
     pkg.build_requires "pl-gcc"
     pkg.build_requires "make"
@@ -36,10 +39,15 @@ component "yaml-cpp" do |pkg, settings, platform|
   make = 'make'
   mkdir = 'mkdir'
 
-  if platform.is_cross_compiled_linux?
+  if platform.is_aix?
+    # We're using pl-cmake with the IBM toolbox gcc:
+    cmake = "/opt/pl-build-tools/bin/cmake"
+    # The toolchain file sets pl-gcc as the compiler; Let cmake use the system gcc instead:
+    cmake_toolchain_file = ""
+  elsif platform.is_cross_compiled_linux?
     # We're using the x86_64 version of cmake
     cmake = "/opt/pl-build-tools/bin/cmake"
-    cmake_toolchain_file = "-DCMAKE_TOOLCHAIN_FILE=#{settings[:tools_root]}/#{settings[:platform_triple]}/pl-build-toolchain.cmake"
+    cmake_toolchain_file = "-DPL_TOOLS_ROOT=/opt/freeware -DCMAKE_TOOLCHAIN_FILE=#{settings[:tools_root]}/#{settings[:platform_triple]}/pl-build-toolchain.cmake"
   elsif platform.is_solaris?
     if platform.os_version == "11"
       make = '/usr/bin/gmake'

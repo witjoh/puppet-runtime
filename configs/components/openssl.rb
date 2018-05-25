@@ -36,8 +36,6 @@ component 'openssl' do |pkg, settings, platform|
                'linux64-s390x'
              end
   elsif platform.is_aix?
-    #pkg.environment 'CC', '/opt/pl-build-tools/bin/gcc'
-
     cflags = '$${CFLAGS} -static-libgcc'
     target = 'aix-gcc'
   elsif platform.is_solaris?
@@ -75,8 +73,6 @@ component 'openssl' do |pkg, settings, platform|
     pkg.build_requires 'imake' if platform.name =~ /^el/
     pkg.build_requires 'xorg-x11-util-devel' if platform.name =~ /^sles/
     pkg.build_requires 'xutils-dev' if platform.is_deb?
-  elsif platform.is_aix?
-    #pkg.build_requires "http://pl-build-tools.delivery.puppetlabs.net/aix/#{platform.os_version}/ppc/pl-gcc-5.2.0-11.aix#{platform.os_version}.ppc.rpm"
   elsif platform.is_macos?
     pkg.build_requires 'makedepend'
   elsif platform.is_cross_compiled_linux?
