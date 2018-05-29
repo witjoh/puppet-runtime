@@ -175,7 +175,7 @@ if platform.is_macos?
 end
 
 if platform.is_aix?
-  proj.setting(:ldflags, "-Wl,-brtl -L#{proj.libdir} -L/opt/pl-build-tools/lib -L/opt/freeware/lib")
+  proj.setting(:ldflags, "-Wl,-brtl -L#{proj.libdir} -L/opt/pl-build-tools/lib")
 end
 
 if platform.is_solaris?

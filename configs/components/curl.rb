@@ -6,7 +6,7 @@ component 'curl' do |pkg, settings, platform|
 
   if platform.is_aix?
     # Patch to disable _ALL_SOURCE when including select.h from multi.c. See patch for details.
-    pkg.apply_patch 'resources/patches/curl/curl-7.55.1-aix-poll.patch'
+    #pkg.apply_patch 'resources/patches/curl/curl-7.55.1-aix-poll.patch'
   end
 
   if settings[:system_openssl]
@@ -27,7 +27,9 @@ component 'curl' do |pkg, settings, platform|
     pkg.environment "PATH" => "$(shell cygpath -u #{settings[:gcc_bindir]}):$(PATH)"
     pkg.environment "CYGWIN" => settings[:cygwin]
   else
-    pkg.environment "PATH" => "/opt/pl-build-tools/bin:$(PATH):#{settings[:bindir]}"
+    unless platform.is_aix?
+      pkg.environment "PATH" => "/opt/pl-build-tools/bin:$(PATH):#{settings[:bindir]}"
+    end
   end
 
   pkg.configure do

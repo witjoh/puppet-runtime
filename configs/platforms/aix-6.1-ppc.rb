@@ -12,6 +12,8 @@ platform "aix-6.1-ppc" do |plat|
   # We can't rely on yum, and rpm can't download over https on AIX, so curl packages before installing them
   # Order matters here - there is no automatic dependency resolution
   packages = [
+    "https://artifactory.delivery.puppetlabs.net/artifactory/rpm__remote_aix_linux_toolbox/ppc/readline/readline-7.0-5.aix6.1.ppc.rpm",
+    "https://artifactory.delivery.puppetlabs.net/artifactory/rpm__remote_aix_linux_toolbox/ppc/readline/readline-devel-7.0-5.aix6.1.ppc.rpm",
     "https://artifactory.delivery.puppetlabs.net/artifactory/rpm__remote_aix_linux_toolbox/ppc/m4/m4-1.4.17-1.aix6.1.ppc.rpm",
     "https://artifactory.delivery.puppetlabs.net/artifactory/rpm__remote_aix_linux_toolbox/ppc/zlib/zlib-1.2.8-1.aix6.1.ppc.rpm",
     "https://artifactory.delivery.puppetlabs.net/artifactory/rpm__remote_aix_linux_toolbox/ppc/zlib/zlib-devel-1.2.8-1.aix6.1.ppc.rpm",
@@ -23,11 +25,13 @@ platform "aix-6.1-ppc" do |plat|
     "https://artifactory.delivery.puppetlabs.net/artifactory/rpm__remote_aix_linux_toolbox/ppc/gettext/gettext-0.19.8.1-1.aix6.1.ppc.rpm",
     "https://artifactory.delivery.puppetlabs.net/artifactory/rpm__remote_aix_linux_toolbox/ppc/ncurses/ncurses-6.1-1.aix6.1.ppc.rpm",
     "https://artifactory.delivery.puppetlabs.net/artifactory/rpm__remote_aix_linux_toolbox/ppc/texinfo/info-6.3-1.aix6.1.ppc.rpm",
+    "https://artifactory.delivery.puppetlabs.net/artifactory/rpm__remote_aix_linux_toolbox/ppc/glib2/glib2-2.52.2-1.aix6.1.ppc.rpm",
     "https://artifactory.delivery.puppetlabs.net/artifactory/rpm__remote_aix_linux_toolbox/ppc-6.1/gcc/libgcc-6.3.0-1.aix6.1.ppc.rpm",
     "https://artifactory.delivery.puppetlabs.net/artifactory/rpm__remote_aix_linux_toolbox/ppc-6.1/gcc/gcc-6.3.0-1.aix6.1.ppc.rpm",
     "https://artifactory.delivery.puppetlabs.net/artifactory/rpm__remote_aix_linux_toolbox/ppc-6.1/gcc/libstdcplusplus-devel-6.3.0-1.aix6.1.ppc.rpm",
     "https://artifactory.delivery.puppetlabs.net/artifactory/rpm__remote_aix_linux_toolbox/ppc-6.1/gcc/gcc-cpp-6.3.0-1.aix6.1.ppc.rpm",
     "https://artifactory.delivery.puppetlabs.net/artifactory/rpm__remote_aix_linux_toolbox/ppc-6.1/gcc/gcc-cplusplus-6.3.0-1.aix6.1.ppc.rpm",
+    "https://artifactory.delivery.puppetlabs.net/artifactory/rpm__remote_aix_linux_toolbox/ppc/pkg-config/pkg-config-0.29.2-1.aix6.1.ppc.rpm",
   ]
 
   packages.each do |uri|
