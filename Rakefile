@@ -53,3 +53,5 @@ def get_component_config(component)
 
   JSON.parse(File.read(conf))
 end
+
+
