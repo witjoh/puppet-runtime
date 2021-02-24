@@ -3,6 +3,7 @@ project 'pdk-runtime' do |proj|
   proj.setting(:runtime_project, "pdk")
   proj.setting(:openssl_version, '1.1.1')
   proj.setting(:buildsources_url, "https://rubygems.org/downloads")
+
   platform = proj.get_platform
 
   proj.version_from_git
