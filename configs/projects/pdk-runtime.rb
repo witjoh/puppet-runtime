@@ -2,6 +2,7 @@ project 'pdk-runtime' do |proj|
   # Used in component configurations to conditionally include dependencies
   proj.setting(:runtime_project, "pdk")
   proj.setting(:openssl_version, '1.1.1')
+  proj.setting(:buildsources_url, "https://rubygems.org/downloads")
   platform = proj.get_platform
 
   proj.version_from_git
@@ -27,7 +28,7 @@ project 'pdk-runtime' do |proj|
   ])
 
   proj.setting(:artifactory_url, "https://artifactory.delivery.puppetlabs.net/artifactory")
-  proj.setting(:buildsources_url, "#{proj.artifactory_url}/generic/buildsources")
+  proj.setting(:buildsources_url, "https://rubygems.org/downloads")
 
   if platform.is_windows?
     proj.setting(:base_dir, "ProgramFiles64Folder")
